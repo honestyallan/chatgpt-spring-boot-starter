@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.flashvayne</groupId>
+    <groupId>io.github.ringle</groupId>
     <artifactId>chatgpt-spring-boot-starter</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 
     <name>chatgpt-spring-boot-starter</name>
     <description>a starter to use chatgpt in springboot project easily</description>
@@ -24,6 +24,10 @@
             <name>flashvayne</name>
             <email>flashvayne@gmail.com</email>
         </developer>
+        <developer>
+            <name>honestyallan</name>
+            <email>honestyallan@gmail.com</email>
+        </developer>
     </developers>
 
     <scm>
@@ -33,7 +37,7 @@
     </scm>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>1.1</java.version>
         <log4j2.version>2.17.1</log4j2.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>

@@ -10,11 +10,11 @@ public class ChatgptProperties {
     //apiKey
     private String apiKey = "";
 
-    private String model = "text-davinci-003";
+    private String model = "";
 
     private Integer maxTokens = 500;
 
-    private Double temperature = 0.0;
+    private Double temperature = 0.7;
 
     private Double topP = 1.0;
     public String getApiKey() {

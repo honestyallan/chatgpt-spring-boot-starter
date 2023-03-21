@@ -10,7 +10,7 @@ public class ChatRequest {
 
     private String model;
 
-    private String prompt;
+//    private String prompt;
 
     /**
      * The maximum number of tokens to generate in the completion.
@@ -24,5 +24,7 @@ public class ChatRequest {
 
     @JsonProperty("top_p")
     private Double topP;
+
+    private Message [] messages;
 
 }

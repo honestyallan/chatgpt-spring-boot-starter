@@ -10,9 +10,9 @@ This starter is based on Openai Official Apis.
 1.Add maven dependency.
 ```pom
 <dependency>
-    <groupId>io.github.flashvayne</groupId>
+    <groupId>io.github.ringle</groupId>
     <artifactId>chatgpt-spring-boot-starter</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 2.Set chatgpt properties in your application.yml
