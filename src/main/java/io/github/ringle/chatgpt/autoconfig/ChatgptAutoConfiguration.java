@@ -1,8 +1,8 @@
-package io.github.flashvayne.chatgpt.autoconfig;
+package io.github.ringle.chatgpt.autoconfig;
 
-import io.github.flashvayne.chatgpt.property.ChatgptProperties;
-import io.github.flashvayne.chatgpt.service.ChatgptService;
-import io.github.flashvayne.chatgpt.service.impl.DefaultChatgptService;
+import io.github.ringle.chatgpt.property.ChatgptProperties;
+import io.github.ringle.chatgpt.service.ChatgptService;
+import io.github.ringle.chatgpt.service.impl.DefaultChatgptService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

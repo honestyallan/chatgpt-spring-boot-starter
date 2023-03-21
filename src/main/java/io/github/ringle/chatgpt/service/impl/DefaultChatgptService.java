@@ -1,11 +1,11 @@
-package io.github.flashvayne.chatgpt.service.impl;
+package io.github.ringle.chatgpt.service.impl;
 
-import io.github.flashvayne.chatgpt.dto.ChatRequest;
-import io.github.flashvayne.chatgpt.dto.ChatResponse;
-import io.github.flashvayne.chatgpt.dto.Message;
-import io.github.flashvayne.chatgpt.exception.ChatgptException;
-import io.github.flashvayne.chatgpt.property.ChatgptProperties;
-import io.github.flashvayne.chatgpt.service.ChatgptService;
+import io.github.ringle.chatgpt.dto.ChatRequest;
+import io.github.ringle.chatgpt.dto.ChatResponse;
+import io.github.ringle.chatgpt.dto.Message;
+import io.github.ringle.chatgpt.exception.ChatgptException;
+import io.github.ringle.chatgpt.property.ChatgptProperties;
+import io.github.ringle.chatgpt.service.ChatgptService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

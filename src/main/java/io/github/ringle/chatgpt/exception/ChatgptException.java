@@ -1,4 +1,4 @@
-package io.github.flashvayne.chatgpt.exception;
+package io.github.ringle.chatgpt.exception;
 
 public class ChatgptException extends RuntimeException{
 

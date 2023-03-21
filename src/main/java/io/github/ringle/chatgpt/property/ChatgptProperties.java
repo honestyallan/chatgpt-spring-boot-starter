@@ -1,4 +1,4 @@
-package io.github.flashvayne.chatgpt.property;
+package io.github.ringle.chatgpt.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

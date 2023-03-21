@@ -1,4 +1,4 @@
-package io.github.flashvayne.chatgpt.dto;
+package io.github.ringle.chatgpt.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
