@@ -37,7 +37,7 @@ public class DefaultChatgptService implements ChatgptService {
   public String sendMessage(String message) {
     Message messageMsg = new Message();
     messageMsg.setContent(message);
-    messageMsg.setRole("assistant");
+    messageMsg.setRole("user");
     ChatRequest chatRequest = new ChatRequest(chatgptProperties.getModel(), chatgptProperties.getMaxTokens(),
         chatgptProperties.getTemperature(), chatgptProperties.getTopP(), new Message[]{messageMsg});
     ChatResponse chatResponse = this.getResponse(this.buildHttpEntity(chatRequest));
