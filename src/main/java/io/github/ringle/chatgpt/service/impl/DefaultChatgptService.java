@@ -2,10 +2,18 @@ package io.github.ringle.chatgpt.service.impl;
 
 import io.github.ringle.chatgpt.dto.ChatRequest;
 import io.github.ringle.chatgpt.dto.ChatResponse;
-import io.github.ringle.chatgpt.dto.Message;
+import io.github.ringle.chatgpt.dto.chat.MultiChatMessage;
+import io.github.ringle.chatgpt.dto.chat.MultiChatRequest;
+import io.github.ringle.chatgpt.dto.chat.MultiChatResponse;
+import io.github.ringle.chatgpt.dto.image.ImageFormat;
+import io.github.ringle.chatgpt.dto.image.ImageRequest;
+import io.github.ringle.chatgpt.dto.image.ImageResponse;
+import io.github.ringle.chatgpt.dto.image.ImageSize;
 import io.github.ringle.chatgpt.exception.ChatgptException;
 import io.github.ringle.chatgpt.property.ChatgptProperties;
 import io.github.ringle.chatgpt.service.ChatgptService;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,9 +29,6 @@ public class DefaultChatgptService implements ChatgptService {
 
   protected final ChatgptProperties chatgptProperties;
 
-  //    private final String URL = "https://api.openai.com/v1/completions";
-  private final String URL = "https://api.openai.com/v1/chat/completions";
-
   private final String AUTHORIZATION;
 
   private final RestTemplate restTemplate = new RestTemplate();
@@ -35,14 +40,10 @@ public class DefaultChatgptService implements ChatgptService {
 
   @Override
   public String sendMessage(String message) {
-    Message messageMsg = new Message();
-    messageMsg.setContent(message);
-    messageMsg.setRole("user");
-    ChatRequest chatRequest = new ChatRequest(chatgptProperties.getModel(), chatgptProperties.getMaxTokens(),
-        chatgptProperties.getTemperature(), chatgptProperties.getTopP(), new Message[]{messageMsg});
-    ChatResponse chatResponse = this.getResponse(this.buildHttpEntity(chatRequest));
+    ChatRequest chatRequest = new ChatRequest(chatgptProperties.getModel(), message, chatgptProperties.getMaxTokens(), chatgptProperties.getTemperature(), chatgptProperties.getTopP());
+    ChatResponse chatResponse = this.getResponse(this.buildHttpEntity(chatRequest), ChatResponse.class, chatgptProperties.getUrl());
     try {
-      return chatResponse.getChoices().get(0).getMessage().getContent();
+      return chatResponse.getChoices().get(0).getText();
     } catch (Exception e) {
       log.error("parse chatgpt message error", e);
       throw e;
@@ -51,20 +52,73 @@ public class DefaultChatgptService implements ChatgptService {
 
   @Override
   public ChatResponse sendChatRequest(ChatRequest chatRequest) {
-    return this.getResponse(this.buildHttpEntity(chatRequest));
+    return this.getResponse(this.buildHttpEntity(chatRequest), ChatResponse.class, chatgptProperties.getUrl());
   }
 
-  public HttpEntity<ChatRequest> buildHttpEntity(ChatRequest chatRequest) {
+  @Override
+  public String multiChat(List<MultiChatMessage> messages) {
+    MultiChatRequest multiChatRequest = new MultiChatRequest(chatgptProperties.getMulti().getModel(), messages, chatgptProperties.getMulti().getMaxTokens(), chatgptProperties.getMulti().getTemperature(), chatgptProperties.getMulti().getTopP());
+    MultiChatResponse multiChatResponse = this.getResponse(this.buildHttpEntity(multiChatRequest), MultiChatResponse.class, chatgptProperties.getMulti().getUrl());
+    try {
+      return multiChatResponse.getChoices().get(0).getMessage().getContent();
+    } catch (Exception e) {
+      log.error("parse chatgpt message error", e);
+      throw e;
+    }
+  }
+
+  @Override
+  public MultiChatResponse multiChatRequest(MultiChatRequest multiChatRequest) {
+    return this.getResponse(this.buildHttpEntity(multiChatRequest), MultiChatResponse.class, chatgptProperties.getMulti().getUrl());
+  }
+
+  @Override
+  public String imageGenerate(String prompt) {
+    ImageRequest imageRequest = new ImageRequest(prompt, null, null, null, null);
+    ImageResponse imageResponse = this.getResponse(this.buildHttpEntity(imageRequest), ImageResponse.class, chatgptProperties.getImage().getUrl());
+    try {
+      return imageResponse.getData().get(0).getUrl();
+    } catch (Exception e) {
+      log.error("parse image url error", e);
+      throw e;
+    }
+  }
+
+  @Override
+  public List<String> imageGenerate(String prompt, Integer n, ImageSize size, ImageFormat format) {
+    ImageRequest imageRequest = new ImageRequest(prompt, n, size.getSize(), format.getFormat(), null);
+    ImageResponse imageResponse = this.getResponse(this.buildHttpEntity(imageRequest), ImageResponse.class, chatgptProperties.getImage().getUrl());
+    try {
+      List<String> list = new ArrayList<>();
+      imageResponse.getData().forEach(imageData -> {
+        if (format.equals(ImageFormat.URL)) {
+          list.add(imageData.getUrl());
+        } else {
+          list.add(imageData.getB64Json());
+        }
+      });
+      return list;
+    } catch (Exception e) {
+      log.error("parse image url error", e);
+      throw e;
+    }
+  }
+
+  @Override
+  public ImageResponse imageGenerateRequest(ImageRequest imageRequest) {
+    return this.getResponse(this.buildHttpEntity(imageRequest), ImageResponse.class, chatgptProperties.getImage().getUrl());
+  }
+
+  protected <T> HttpEntity<?> buildHttpEntity(T request) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.parseMediaType("application/json; charset=UTF-8"));
     headers.add("Authorization", AUTHORIZATION);
-    return new HttpEntity<>(chatRequest, headers);
+    return new HttpEntity<>(request, headers);
   }
 
-  public ChatResponse getResponse(HttpEntity<ChatRequest> chatRequestHttpEntity) {
-    log.info("request url: {}, httpEntity: {}", URL, chatRequestHttpEntity);
-    ResponseEntity<ChatResponse> responseEntity = restTemplate.postForEntity(URL, chatRequestHttpEntity,
-        ChatResponse.class);
+  protected <T> T getResponse(HttpEntity<?> httpEntity, Class<T> responseType, String url) {
+    log.info("request url: {}, httpEntity: {}", url, httpEntity);
+    ResponseEntity<T> responseEntity = restTemplate.postForEntity(url, httpEntity, responseType);
     if (responseEntity.getStatusCode().isError()) {
       log.error("error response status: {}", responseEntity);
       throw new ChatgptException("error response status :" + responseEntity.getStatusCode().value());
