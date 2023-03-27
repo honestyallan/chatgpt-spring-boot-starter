@@ -59,5 +59,12 @@ public class MultiChatRequest {
         this.temperature = temperature;
         this.topP = topP;
     }
-
+    public MultiChatRequest(String model, List<MultiChatMessage> messages, Integer maxTokens, Double temperature, Double topP, Boolean stream) {
+        this.model = model;
+        this.messages = messages;
+        this.maxTokens = maxTokens;
+        this.temperature = temperature;
+        this.topP = topP;
+        this.stream = stream;
+    }
 }

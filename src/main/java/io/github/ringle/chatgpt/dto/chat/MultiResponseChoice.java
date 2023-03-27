@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MultiResponseChoice {
     private MultiChatMessage message;
+    private MultiChatMessage delta;
 
     @JsonProperty("finish_reason")
     private String finishReason;

@@ -12,6 +12,8 @@ public class MultiChatProperties {
 
     private Double topP = 1.0;
 
+    private Boolean stream = false;
+
     public String getUrl() {
         return url;
     }
@@ -50,5 +52,13 @@ public class MultiChatProperties {
 
     public void setTopP(Double topP) {
         this.topP = topP;
+    }
+
+    public Boolean getStream() {
+        return stream;
+    }
+
+    public void setStream(Boolean stream) {
+        this.stream = stream;
     }
 }

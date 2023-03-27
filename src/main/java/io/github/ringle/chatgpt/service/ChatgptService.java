@@ -1,5 +1,8 @@
 package io.github.ringle.chatgpt.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.ringle.chatgpt.dto.ChatRequest;
+import io.github.ringle.chatgpt.dto.ChatResponse;
 import io.github.ringle.chatgpt.dto.chat.MultiChatMessage;
 import io.github.ringle.chatgpt.dto.chat.MultiChatRequest;
 import io.github.ringle.chatgpt.dto.chat.MultiChatResponse;
@@ -7,9 +10,8 @@ import io.github.ringle.chatgpt.dto.image.ImageFormat;
 import io.github.ringle.chatgpt.dto.image.ImageRequest;
 import io.github.ringle.chatgpt.dto.image.ImageResponse;
 import io.github.ringle.chatgpt.dto.image.ImageSize;
-import io.github.ringle.chatgpt.dto.ChatRequest;
-import io.github.ringle.chatgpt.dto.ChatResponse;
 import java.util.List;
+import reactor.core.publisher.Flux;
 
 public interface ChatgptService {
 
@@ -18,6 +20,8 @@ public interface ChatgptService {
     ChatResponse sendChatRequest(ChatRequest request);
 
     String multiChat(List<MultiChatMessage> messages);
+
+    Flux<String> consumeServerSentEvent(List<MultiChatMessage> messages) throws JsonProcessingException;
 
     MultiChatResponse multiChatRequest(MultiChatRequest multiChatRequest);
 
