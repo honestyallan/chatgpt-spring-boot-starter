@@ -105,7 +105,7 @@ public class DefaultChatgptService implements ChatgptService {
    */
   @Override
   public Flux<String> consumeServerSentEvent(List<MultiChatMessage> messages) throws JsonProcessingException {
-    ParameterizedTypeReference<String> type = new ParameterizedTypeReference<>() {
+    ParameterizedTypeReference<String> type = new ParameterizedTypeReference<String>() {
     };
     MultiChatRequest multiChatRequest = new MultiChatRequest(chatgptProperties.getMulti().getModel(), messages,
         chatgptProperties.getMulti().getMaxTokens(), chatgptProperties.getMulti().getTemperature(),
