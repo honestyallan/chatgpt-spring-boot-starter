@@ -120,8 +120,7 @@ public class DefaultChatgptService implements ChatgptService {
                  .bodyToFlux(type)
                  .mapNotNull(event -> {
                    try {
-                     MultiChatResponse multiChatResponse = objectMapper.readValue(event, MultiChatResponse.class);
-                     return multiChatResponse;
+                       return objectMapper.readValue(event, MultiChatResponse.class);
                    } catch (JsonProcessingException | StringIndexOutOfBoundsException e) {
                      return null;
                    }
